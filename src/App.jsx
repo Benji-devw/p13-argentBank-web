@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import SignIn from './pages/sign-in';
 import User from './pages/user';
 import SignUp from './pages/sign-up';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
     return (
@@ -12,7 +13,7 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/sign-up" element={<SignUp />} />
-                <Route path="/user" element={<User />} />
+                <Route path="/user" element={<PrivateRoute element={User} />} />
             </Routes>
         </Router>
     );

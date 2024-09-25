@@ -21,7 +21,13 @@ const SignIn = () => {
         e.preventDefault();
         const payload = await callApi('/login', 'POST', formData);
         console.log('payload', payload);
-        payload.status === 200 ? navigate('/user') : alert(payload.message);
+        if (payload.status === 200) {
+            navigate('/user');
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userToken', payload.body.token);
+        } else {
+            alert(payload.message);
+        }
     };
 
     return (

@@ -1,13 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { callApi } from '../api/call-api';
+import { useNavigate } from 'react-router-dom';
 
 const User = () => {
+    const [userData, setUserData] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = localStorage.getItem('userToken');
+            
+            if (!token) {
+                console.error('No token found');
+                navigate('/');
+            }
+
+            const payload = await callApi('/user/profile', 'POST', {}, token);
+            console.log('USER-----', payload);
+            if (payload.status === 200) {
+                setUserData(payload.body);
+            }
+            
+        };
+
+        fetchUserData();
+    }, []);
+
+
     return (
         <>
             <div className="header">
                 <h1>
                     Welcome back
                     <br />
-                    Tony Jarvis!
+                    {userData && userData.firstName} {userData && userData.lastName}
                 </h1>
                 <button className="edit-button">Edit Name</button>
             </div>

@@ -21,7 +21,7 @@ const SignIn = () => {
         e.preventDefault();
         const payload = await callApi('/user/login', 'POST', formData);
         const user = await callApi('/user/profile', 'POST', {}, payload.body.token);
-        console.log('payload', payload);
+        // console.log('payload', payload);
 
         if (payload.status === 200 && user.status === 200) {
             navigate(`/user/${user.body.id}`);

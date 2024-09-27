@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { callApi } from '../api/call-api';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import Layout from '../components/Layout';
 
 const User = () => {
     const [userData, setUserData] = useState(null);
@@ -28,14 +30,14 @@ const User = () => {
 
 
     return (
-        <>
+        <Layout>
             <div className="header">
                 <h1>
                     Welcome back
                     <br />
                     {userData && userData.firstName} {userData && userData.lastName}
                 </h1>
-                <button className="edit-button">Edit Name</button>
+                <Link to='/user-update' className="edit-button">Edit Name</Link>
             </div>
             <h2 className="sr-only">Accounts</h2>
             <section className="account">
@@ -68,7 +70,7 @@ const User = () => {
                     <button className="transaction-button">View transactions</button>
                 </div>
             </section>
-        </>
+        </Layout>
     );
 };
 

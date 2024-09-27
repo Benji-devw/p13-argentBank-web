@@ -5,6 +5,7 @@ import SignIn from './pages/sign-in';
 import User from './pages/user';
 import SignUp from './pages/sign-up';
 import PrivateRoute from './components/PrivateRoute';
+import UserUpdate from './pages/userUpdate';
 
 const App = () => {
     return (
@@ -14,6 +15,7 @@ const App = () => {
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path={`/user/:id`} element={<PrivateRoute element={User} />} />
+                <Route path={`/user-update`} element={<PrivateRoute element={UserUpdate} />} />
                 <Route path="*" element={<div>404</div>} />
             </Routes>
         </Router>

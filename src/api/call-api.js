@@ -9,6 +9,6 @@ export const callApi = async (url, method, payload) => {
         },
         body: JSON.stringify(payload),
     });
-    console.log('callApi', response);
+    // console.log('callApi', response);
     return await response.json();
 }

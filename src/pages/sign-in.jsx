@@ -7,14 +7,14 @@ const SignIn = () => {
     const [formData, setFormData] = useState({
         email: 'tony@stark.com',
         password: '123',
-        // rememberMe: false,
     });
     const navigate = useNavigate();
 
     const handleChanges = (e) => {
-        // const { name, type, value } = e.target;
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        name === 'remember-me'
+            ? localStorage.setItem('rememberMe', e.target.checked)
+            : setFormData({ ...formData, [name]: value });
     };
 
     const handleSignIn = async (e) => {
@@ -45,7 +45,7 @@ const SignIn = () => {
                         <input type="password" id="password" name="password" onChange={handleChanges} />
                     </div>
                     <div className="input-remember">
-                        <input type="checkbox" id="remember-me" />
+                        <input type="checkbox" id="remember-me" name="remember-me" onChange={handleChanges} />
                         <label htmlFor="remember-me">Remember me</label>
                     </div>
                     <button className="sign-in-button" type="submit">

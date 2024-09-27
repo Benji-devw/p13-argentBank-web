@@ -26,13 +26,9 @@ const SignIn = () => {
         e.preventDefault();
         try {
             const resultAction = await dispatch(login(formData));
-            if (login.fulfilled.match(resultAction)) {
-                const token = resultAction.payload;
-                localStorage.setItem('userToken', token);
-                navigate('/user');
-            } else {
-                console.error('Login failed:', resultAction.payload);
-            }
+            login.fulfilled.match(resultAction) 
+                ? navigate('/user')
+                : console.error('Login failed:', resultAction.payload);
         } catch (error) {
             console.error('Error during sign in:', error);
         }

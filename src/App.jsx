@@ -7,6 +7,7 @@ import SignUp from './pages/sign-up';
 import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
+    
     return (
         <Router>
             <Routes>

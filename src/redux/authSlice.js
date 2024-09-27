@@ -3,6 +3,7 @@ import { callApi } from '../api/call-api';
 
 const initialState = {
     token: localStorage.getItem('userToken') || '',
+    isAuthenticated: !!localStorage.getItem('userToken'),
     isLoading: false,
     errorMessage: null,
 };
@@ -41,9 +42,11 @@ const authSlice = createSlice({
     reducers: {
         logout: (state) => {
             state.token = '';
+            localStorage.removeItem('userToken');
+            localStorage.setItem('isAuthenticated', 'false');
         },
     },
-    
+
     // extraReducers =>
     // Usage : Utilisé pour gérer les actions définies en dehors du slice, telles que les actions asynchrones créées avec createAsyncThunk ou les actions provenant d'autres slices.
     // Actions : Les actions ne sont pas automatiquement générées. Vous devez les importer ou les définir séparément.
@@ -57,9 +60,13 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, { payload }) => {
                 state.isLoading = false;
                 state.token = payload;
+                state.isAuthenticated = true;
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('userToken', payload);
             })
             .addCase(login.rejected, (state, { payload }) => {
                 state.isLoading = false;
+                state.isAuthenticated = false;
                 state.errorMessage = payload;
             });
     },

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { useNavigate } from 'react-router-dom';
-import { callApi } from '../api/call-api';
+// import { callApi } from '../api/call-api';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../redux/authSlice';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -9,6 +11,9 @@ const SignIn = () => {
         password: '123',
     });
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const isLoading = useSelector((state) => state.auth.isLoading);
+    const errorMessage = useSelector((state) => state.auth.errorMessage);
 
     const handleChanges = (e) => {
         const { name, value } = e.target;
@@ -19,19 +24,21 @@ const SignIn = () => {
 
     const handleSignIn = async (e) => {
         e.preventDefault();
-        const payload = await callApi('/user/login', 'POST', formData);
-        const user = await callApi('/user/profile', 'POST', {}, payload.body.token);
-        // console.log('payload', payload);
-
-        if (payload.status === 200 && user.status === 200) {
-            navigate(`/user/${user.body.id}`);
-            localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('userToken', payload.body.token);
-        } else {
-            alert(payload.message);
+        try {
+            const resultAction = await dispatch(login(formData));
+            if (login.fulfilled.match(resultAction)) {
+                const token = resultAction.payload;
+                localStorage.setItem('userToken', token);
+                navigate('/user');
+            } else {
+                console.error('Login failed:', resultAction.payload);
+            }
+        } catch (error) {
+            console.error('Error during sign in:', error);
         }
     };
 
+    // console.log('isLoading', isLoading);
     return (
         <Layout>
             <section className="sign-in-content">
@@ -50,9 +57,10 @@ const SignIn = () => {
                         <input type="checkbox" id="remember-me" name="remember-me" onChange={handleChanges} />
                         <label htmlFor="remember-me">Remember me</label>
                     </div>
-                    <button className="sign-in-button" type="submit">
-                        Sign In
+                    <button disabled={isLoading} className="sign-in-button" type="submit">
+                        {isLoading ? 'Loading...' : 'Sign In'}
                     </button>
+                    {errorMessage && <p>{errorMessage}</p>}
                 </form>
             </section>
         </Layout>

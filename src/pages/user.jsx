@@ -1,33 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { callApi } from '../api/call-api';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 
 const User = () => {
     const [userData, setUserData] = useState(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
-            const token = localStorage.getItem('userToken');
-            
-            if (!token) {
-                console.error('No token found');
-                navigate('/');
-            }
-
-            const payload = await callApi('/user/profile', 'POST', {}, token);
+            const payload = await callApi('/user/profile', 'POST', {}, localStorage.getItem('userToken'));
             console.log('USER-----', payload);
             if (payload.status === 200) {
                 setUserData(payload.body);
             }
-            
         };
-
         fetchUserData();
     }, []);
-
 
     return (
         <Layout>
@@ -37,7 +24,7 @@ const User = () => {
                     <br />
                     {userData && userData.firstName} {userData && userData.lastName}
                 </h1>
-                <Link to='/user-update' className="edit-button">Edit Name</Link>
+                <button className="edit-button">Edit Name</button>
             </div>
             <h2 className="sr-only">Accounts</h2>
             <section className="account">

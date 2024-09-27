@@ -1,0 +1,57 @@
+[{
+  "_id": {
+    "$oid": "66f017594b0fe58031b3f6f5"
+  },
+  "email": "steve@rogers.com",
+  "password": "456",
+  "firstName": "Steve",
+  "lastName": "Rogers"
+},
+{
+  "_id": {
+    "$oid": "66f3415f57f17bdb4a13fbe1"
+  },
+  "email": "tony@stark.com",
+  "password": "$2b$12$9hN3B/obINyM7nEWoszEkeetNh8jcZNNWZ3H5WgTgZdZfgEu52fIS",
+  "firstName": "tony",
+  "lastName": "stark",
+  "createdAt": {
+    "$date": "2024-09-24T22:46:55.653Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T22:46:55.653Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f34caa57f17bdb4a13fbe3"
+  },
+  "email": "test@test.fr",
+  "password": "$2b$12$ksFAAXOKAZbUjfQOBQksy.cX66I3Qv6w5t9J63XITKinf6bdhp4z6",
+  "firstName": "test",
+  "lastName": "tesss",
+  "createdAt": {
+    "$date": "2024-09-24T23:35:06.196Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-24T23:35:06.196Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "66f3536f57f17bdb4a13fbe4"
+  },
+  "email": "admin@pm.me",
+  "password": "$2b$12$g.YbPzLEYUeOp7bCynoIcuygX3yt/zOafPtyxiiqs3VvMACTc9PJ6",
+  "firstName": "ben",
+  "lastName": "Nav",
+  "createdAt": {
+    "$date": "2024-09-25T00:03:59.650Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-25T00:03:59.650Z"
+  },
+  "__v": 0
+}]

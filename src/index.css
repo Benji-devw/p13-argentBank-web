@@ -314,3 +314,19 @@ button:disabled {
     width: 200px;
   }
 }
+
+.user-edit {
+  display: flex;
+  flex-direction: column;
+  /* width: 100%; */
+}
+.user-edit input {
+  padding: 5px;
+  margin: 10px;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.editing-button {
+  padding: 5px;
+  margin: 10px;
+}

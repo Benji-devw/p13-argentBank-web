@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { callApi } from '../api/call-api';
 
 const initialState = {
-    token: localStorage.getItem('userToken') || '',
-    isAuthenticated: !!localStorage.getItem('userToken'),
+    lastName: '',
+    firstName: '',
+    isEditing: false,
     isLoading: false,
     errorMessage: null,
 };
@@ -13,20 +14,20 @@ const initialState = {
  * @returns {Promise} - token
  * @description - Cette fonction permet de se connecter à l'API pour l'auth
  */
-export const login = createAsyncThunk('auth/login', async (formData, { rejectWithValue }) => {
-    // console.log('login', formData);
+export const getUserData = createAsyncThunk('user/getUserData', async (token, { rejectWithValue }) => {
+    const response = await callApi('/user/profile', 'POST', {}, token);
+    // console.log('Parsed response:--------', response);
 
-    const response = await callApi('/user/login', 'POST', formData);
-    if (response.body && response.body.token) {
-        return { token: response.body.token, rememberMe: formData.rememberMe === 'on' ? true : false };
+    if (response.body) {
+        return response.body;
     } else {
         return rejectWithValue(response.message);
     }
 });
 
-// Slice pour l'authentification
-const authSlice = createSlice({
-    name: 'auth',
+// Slice pour user
+const userSlice = createSlice({
+    name: 'user',
     initialState,
 
     // reducers =>
@@ -34,11 +35,12 @@ const authSlice = createSlice({
     // Actions : Les actions sont automatiquement générées pour chaque fonction de reducer définie dans reducers.
     // Syntaxe : Les reducers sont définis comme des méthodes d'un objet.
     reducers: {
-        logout: (state) => {
-            state.token = '';
-            state.isAuthenticated = false;
-            localStorage.removeItem('userToken');
-            localStorage.setItem('isAuthenticated', 'false');
+        updateUser: (state, { payload }) => {
+            state.firstName = payload.firstName;
+            state.lastName = payload.lastName;
+        },
+        setIsEditing: (state) => {
+            state.isEditing = !state.isEditing;
         },
     },
 
@@ -48,25 +50,23 @@ const authSlice = createSlice({
     // Syntaxe : Les reducers sont définis en utilisant une fonction de constructeur (builder).
     extraReducers: (builder) => {
         builder
-            .addCase(login.pending, (state) => {
+            .addCase(getUserData.pending, (state) => {
                 state.isLoading = true;
                 state.errorMessage = null;
             })
-            .addCase(login.fulfilled, (state, { payload }) => {
+            .addCase(getUserData.fulfilled, (state, { payload }) => {
+                console.log('payload', payload);
+                
                 state.isLoading = false;
-                state.token = payload.token;
-                state.isAuthenticated = true;
-                if (payload.rememberMe) {
-                    localStorage.setItem('userToken', payload.token);
-                }
+                state.firstName = payload.firstName;
+                state.lastName = payload.lastName;
             })
-            .addCase(login.rejected, (state, { payload }) => {
+            .addCase(getUserData.rejected, (state, { payload }) => {
                 state.isLoading = false;
-                state.isAuthenticated = false;
                 state.errorMessage = payload;
             });
     },
 });
 
-export const { logout } = authSlice.actions;
-export default authSlice.reducer;
+export const { setIsEditing, updateUser } = userSlice.actions;
+export default userSlice.reducer;

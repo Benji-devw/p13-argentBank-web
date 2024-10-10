@@ -4,35 +4,33 @@ import { useNavigate } from 'react-router-dom';
 // import { callApi } from '../api/call-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/authSlice';
+import { useEffect } from 'react';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
         email: 'tony@stark.com',
         password: '123',
+        rememberMe: false,
     });
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const isLoading = useSelector((state) => state.auth.isLoading);
-    const errorMessage = useSelector((state) => state.auth.errorMessage);
+    const { isLoading, errorMessage, isAuthenticated } = useSelector((state) => state.auth);
 
     const handleChanges = (e) => {
-        const { name, value } = e.target;
-        name === 'remember-me'
-            ? localStorage.setItem('rememberMe', e.target.checked)
-            : setFormData({ ...formData, [name]: value });
+        const { name, value, checked } = e.target;
+        setFormData({ ...formData, [name]: value || checked });
     };
 
-    const handleSignIn = async (e) => {
+    const handleSignIn = (e) => {
         e.preventDefault();
-        try {
-            const resultAction = await dispatch(login(formData));
-            login.fulfilled.match(resultAction) 
-                ? navigate('/user')
-                : console.error('Login failed:', resultAction.payload);
-        } catch (error) {
-            console.error('Error during sign in:', error);
-        }
+        dispatch(login(formData))
     };
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/user');
+        }
+    }, [isAuthenticated, navigate]);
 
     // console.log('isLoading', isLoading);
     return (
@@ -50,8 +48,8 @@ const SignIn = () => {
                         <input type="password" id="password" name="password" onChange={handleChanges} />
                     </div>
                     <div className="input-remember">
-                        <input type="checkbox" id="remember-me" name="remember-me" onChange={handleChanges} />
-                        <label htmlFor="remember-me">Remember me</label>
+                        <input type="checkbox" id="rememberMe" name="rememberMe" onChange={handleChanges} />
+                        <label htmlFor="rememberMe">Remember me</label>
                     </div>
                     <button disabled={isLoading} className="sign-in-button" type="submit">
                         {isLoading ? 'Loading...' : 'Sign In'}

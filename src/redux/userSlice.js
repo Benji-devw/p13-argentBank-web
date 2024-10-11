@@ -17,12 +17,12 @@ const initialState = {
 export const getUserData = createAsyncThunk('user/getUserData', async (token, { rejectWithValue }) => {
     const response = await callApi('/user/profile', 'POST', {}, token);
     // console.log('Parsed response:--------', response);
+    return response.body ? response.body : rejectWithValue(response.message);
+});
 
-    if (response.body) {
-        return response.body;
-    } else {
-        return rejectWithValue(response.message);
-    }
+export const updateUserData = createAsyncThunk('user/updateUserData', async (payload, { rejectWithValue }) => {
+    const response = await callApi('/user/profile', 'PUT', payload.userData, payload.token);
+    return response.body ? response.body : rejectWithValue(response.message);
 });
 
 // Slice pour user
@@ -35,10 +35,6 @@ const userSlice = createSlice({
     // Actions : Les actions sont automatiquement générées pour chaque fonction de reducer définie dans reducers.
     // Syntaxe : Les reducers sont définis comme des méthodes d'un objet.
     reducers: {
-        updateUser: (state, { payload }) => {
-            state.firstName = payload.firstName;
-            state.lastName = payload.lastName;
-        },
         setIsEditing: (state) => {
             state.isEditing = !state.isEditing;
         },
@@ -55,8 +51,8 @@ const userSlice = createSlice({
                 state.errorMessage = null;
             })
             .addCase(getUserData.fulfilled, (state, { payload }) => {
-                console.log('payload', payload);
-                
+                // console.log('payload', payload);
+
                 state.isLoading = false;
                 state.firstName = payload.firstName;
                 state.lastName = payload.lastName;
@@ -64,6 +60,19 @@ const userSlice = createSlice({
             .addCase(getUserData.rejected, (state, { payload }) => {
                 state.isLoading = false;
                 state.errorMessage = payload;
+            })
+            .addCase(updateUserData.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(updateUserData.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.firstName = action.payload.firstName;
+                state.lastName = action.payload.lastName;
+                state.isEditing = false;
+            })
+            .addCase(updateUserData.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload;
             });
     },
 });

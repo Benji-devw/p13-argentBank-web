@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { callApi } from '../api/call-api';
 import Layout from '../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserData, setIsEditing, updateUser } from '../redux/userSlice';
+import { getUserData, updateUserData, setIsEditing } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const User = () => {
@@ -15,6 +14,12 @@ const User = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const handleSave = (e) => {
+        e.preventDefault();
+        dispatch(updateUserData({userData, token }));
+        dispatch(setIsEditing());
+    };
+    
     const handleEdit = () => {
         dispatch(setIsEditing());
     };
@@ -45,16 +50,20 @@ const User = () => {
         <Layout>
             <div className="main bg-dark">
                 <div className="header">
+                <h1>Welcome back</h1>
+
                     {isEditing ? (
-                        <form className="user-edit">
+                        <form className="user-edit" onSubmit={handleSave}>
                             <div>
                                 <input
                                     type="text"
+                                    name='firstName'
                                     value={userData.firstName}
                                     onChange={handleChangeName}
                                 />
                                 <input
                                     type="text"
+                                    name='lastName'
                                     value={userData.lastName}
                                     onChange={handleChangeName}
                                 />
@@ -70,7 +79,6 @@ const User = () => {
                         </form>
                     ) : (
                         <>
-                            <h1>Welcome back</h1>
                             <h2>{firstName} {lastName}</h2>
                             <button className="edit-button" onClick={handleEdit}>
                                 Edit Name

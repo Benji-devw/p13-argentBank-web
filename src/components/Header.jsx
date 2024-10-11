@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/authSlice';
-// import { getUserData } from '../redux/userSlice';
+import { getUserData } from '../redux/userSlice';
 
 const Header = () => {
-    const token = useSelector((state) => state.auth);
-    // const { firstName } = useSelector((state) => state.user);
+    const data = useSelector((state) => state.auth);
+    const { firstName } = useSelector((state) => state.user);
     const dispatch = useDispatch();
 
     const handleLogout = () => {
@@ -24,11 +24,11 @@ const Header = () => {
                     <h1 className="sr-only">Argent Bank</h1>
                 </Link>
                 <div>
-                    {token ? (
+                    {data.token ? (
                         <>
                             <Link className="main-nav-item" to="/user">
                                 <i className="fa fa-user-circle"></i>
-                                {/* {firstName} */}
+                                {firstName}
                             </Link>
                             <button className="main-nav-item" onClick={handleLogout}>
                                 <i className="fa fa-sign-out"></i>

@@ -28,10 +28,10 @@ const Header = () => {
                                 <i className="fa fa-user-circle"></i>
                                 {firstName}
                             </Link>
-                            <button className="main-nav-item" onClick={handleLogout}>
-                                <i className="fa fa-sign-out"></i>
-                                Logout
-                            </button>
+                            <Link className="main-nav-item" onClick={handleLogout}>
+                            <i className="fas fa-sign-out"></i>
+                                Sign out
+                            </Link>
                         </>
                     ) : (
                         <>
@@ -41,10 +41,10 @@ const Header = () => {
                             </Link>
                         </>
                     )}
-                    <Link className="main-nav-item" to="/sign-up">
+                    {/* <Link className="main-nav-item" to="/sign-up">
                         <i className="fa fa-user-circle"></i>
                         Sign Up
-                    </Link>
+                    </Link> */}
                 </div>
             </nav>
         </header>

@@ -14,8 +14,6 @@ const initialState = {
  * @description - Cette fonction permet de se connecter à l'API pour l'auth
  */
 export const login = createAsyncThunk('auth/login', async (formData, { rejectWithValue }) => {
-    // console.log('login', formData);
-
     const response = await callApi('/user/login', 'POST', formData);
     if (response.body && response.body.token) {
         return { token: response.body.token, rememberMe: formData.rememberMe === 'on' ? true : false };

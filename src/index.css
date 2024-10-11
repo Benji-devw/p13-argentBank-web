@@ -12,6 +12,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 } */
+
 html {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -20,14 +21,15 @@ html {
   color: #2c3e50;
 }
 
-body {
+body, #layout {
   margin: 0;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 h1 {
-  color: #2c3e50;
+  padding: 0;
+  margin: .3em 0;
 }
 
 .main {
@@ -85,6 +87,10 @@ h1 {
 .main-nav-logo-image {
   max-width: 100%;
   width: 200px;
+}
+.main-nav-item .fa {
+  font-size: 1.2rem;
+  margin-right: 0.3rem;
 }
 
 .hero {
@@ -269,6 +275,7 @@ h1 {
 }
 
 .edit-button {
+  cursor: pointer;
   border-color: #00bc77;
   background-color: #00bc77;
   color: #fff;
@@ -321,12 +328,28 @@ button:disabled {
   /* width: 100%; */
 }
 .user-edit input {
+  color: #788086;
   padding: 5px;
   margin: 10px;
+  border: #c3cfd9;
+  border-radius: 3px;
   font-size: 1.2rem;
   margin-bottom: 1rem;
 }
-.editing-button {
+.editing-button,
+.canceling-button {
   padding: 5px;
   margin: 10px;
+  width: 100px;
+  border-radius: 3px;
+  font-weight: bold;
+  padding: 10px;
+  border-color: #00bc77;
+  cursor: pointer;
 }
+.editing-button {
+  color: #00bc77;
+}
+/* .canceling-button {
+
+} */

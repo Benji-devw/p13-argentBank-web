@@ -48,10 +48,8 @@ const User = () => {
         }
     }, [token, dispatch, navigate, firstName, lastName]);
 
-    // console.log(setIsLoading);
-
     return (
-        <Layout>
+        <Layout className="main bg-dark">
             <div className="main bg-dark">
                 <div className="header">
                     <h1>Welcome back</h1>
@@ -77,16 +75,16 @@ const User = () => {
                                     {isLoading ? 'Saving...' : 'Save'}
                                     {/* Save */}
                                 </button>
-                                <button className="editing-button" onClick={handleEdit}>
+                                <button className="canceling-button" onClick={handleEdit}>
                                     Cancel
                                 </button>
                             </div>
                         </form>
                     ) : (
                         <>
-                            <h2>
+                            <h1>
                                 {firstName} {lastName}
-                            </h2>
+                            </h1>
                             <button className="edit-button" onClick={handleEdit}>
                                 Edit Name
                             </button>

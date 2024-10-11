@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { useNavigate } from 'react-router-dom';
-// import { callApi } from '../api/call-api';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/authSlice';
 import { useEffect } from 'react';
@@ -23,7 +22,7 @@ const SignIn = () => {
 
     const handleSignIn = (e) => {
         e.preventDefault();
-        dispatch(login(formData))
+        dispatch(login(formData));
     };
 
     useEffect(() => {
@@ -32,9 +31,8 @@ const SignIn = () => {
         }
     }, [isAuthenticated, navigate]);
 
-    // console.log('isLoading', isLoading);
     return (
-        <Layout>
+        <Layout className="main bg-dark">
             <section className="sign-in-content">
                 <i className="fa fa-user-circle sign-in-icon"></i>
                 <h1>Sign In</h1>

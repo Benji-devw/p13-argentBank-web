@@ -31,12 +31,23 @@ const authSlice = createSlice({
     // Usage : Utilisé pour définir les reducers qui gèrent les actions synchrones créées à l'intérieur du slice.
     // Actions : Les actions sont automatiquement générées pour chaque fonction de reducer définie dans reducers.
     // Syntaxe : Les reducers sont définis comme des méthodes d'un objet.
-    reducers: {
+reducers: {
         logout: (state) => {
             state.token = '';
             state.isAuthenticated = false;
             localStorage.removeItem('userToken');
+            localStorage.removeItem('tokenExpiration');
             localStorage.setItem('isAuthenticated', 'false');
+        },
+        checkTokenExpiration: (state) => {
+            const tokenExpiration = localStorage.getItem('tokenExpiration');
+            if (tokenExpiration && new Date(tokenExpiration) < new Date()) {
+                state.token = '';
+                state.isAuthenticated = false;
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('tokenExpiration');
+                localStorage.setItem('isAuthenticated', 'false');
+            }
         },
     },
 
@@ -46,25 +57,34 @@ const authSlice = createSlice({
     // Syntaxe : Les reducers sont définis en utilisant une fonction de constructeur (builder).
     extraReducers: (builder) => {
         builder
-            .addCase(login.pending, (state) => {
-                state.isLoading = true;
-                state.errorMessage = null;
-            })
-            .addCase(login.fulfilled, (state, { payload }) => {
-                state.isLoading = false;
-                state.token = payload.token;
-                state.isAuthenticated = true;
-                if (payload.rememberMe) {
-                    localStorage.setItem('userToken', payload.token);
-                }
-            })
-            .addCase(login.rejected, (state, { payload }) => {
-                state.isLoading = false;
-                state.isAuthenticated = false;
-                state.errorMessage = payload;
-            });
+        .addCase(login.pending, (state) => {
+            state.isLoading = true;
+            state.errorMessage = null;
+        })
+        .addCase(login.fulfilled, (state, { payload }) => {
+            state.isLoading = false;
+            state.token = payload.token;
+            state.isAuthenticated = true;
+            if (payload.rememberMe) {
+                const expirationTime = new Date();
+                expirationTime.setMinutes(expirationTime.getHours() + 1); // Set oken to expire in 1 hour
+                localStorage.setItem('userToken', payload.token);
+                localStorage.setItem('tokenExpiration', expirationTime.toISOString());
+            }
+            if (!payload.rememberMe) {
+                const expirationTime = new Date();
+                expirationTime.setMinutes(expirationTime.getMinutes() + 1); // Set token to expire in 1 minute
+                localStorage.setItem('userToken', payload.token);
+                localStorage.setItem('tokenExpiration', expirationTime.toISOString());
+            }
+        })
+        .addCase(login.rejected, (state, { payload }) => {
+            state.isLoading = false;
+            state.isAuthenticated = false;
+            state.errorMessage = payload;
+        });
     },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, checkTokenExpiration } = authSlice.actions;
 export default authSlice.reducer;

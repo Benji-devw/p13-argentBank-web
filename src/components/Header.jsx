@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/authSlice';
-import { getUserData } from '../redux/userSlice';
 
 const Header = () => {
     const data = useSelector((state) => state.auth);
@@ -11,7 +10,6 @@ const Header = () => {
 
     const handleLogout = () => {
         dispatch(logout());
-        // dispatch(getUserData({ token }));
     };
 
     // console.log('firstName', firstName);

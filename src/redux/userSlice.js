@@ -16,7 +16,6 @@ const initialState = {
  */
 export const getUserData = createAsyncThunk('user/getUserData', async (token, { rejectWithValue }) => {
     const response = await callApi('/user/profile', 'POST', {}, token);
-    // console.log('Parsed response:--------', response);
     return response.body ? response.body : rejectWithValue(response.message);
 });
 
@@ -35,6 +34,9 @@ const userSlice = createSlice({
     // Actions : Les actions sont automatiquement générées pour chaque fonction de reducer définie dans reducers.
     // Syntaxe : Les reducers sont définis comme des méthodes d'un objet.
     reducers: {
+        setIsLoading: (state) => {
+            state.isLoading = !state.isLoading;
+        },
         setIsEditing: (state) => {
             state.isEditing = !state.isEditing;
         },
@@ -46,13 +48,12 @@ const userSlice = createSlice({
     // Syntaxe : Les reducers sont définis en utilisant une fonction de constructeur (builder).
     extraReducers: (builder) => {
         builder
+            // Get user data
             .addCase(getUserData.pending, (state) => {
                 state.isLoading = true;
                 state.errorMessage = null;
             })
             .addCase(getUserData.fulfilled, (state, { payload }) => {
-                // console.log('payload', payload);
-
                 state.isLoading = false;
                 state.firstName = payload.firstName;
                 state.lastName = payload.lastName;
@@ -61,6 +62,8 @@ const userSlice = createSlice({
                 state.isLoading = false;
                 state.errorMessage = payload;
             })
+
+            // Update user data
             .addCase(updateUserData.pending, (state) => {
                 state.status = 'loading';
             })
@@ -77,5 +80,5 @@ const userSlice = createSlice({
     },
 });
 
-export const { setIsEditing, updateUser } = userSlice.actions;
+export const { setIsEditing, updateUser, setIsLoading } = userSlice.actions;
 export default userSlice.reducer;

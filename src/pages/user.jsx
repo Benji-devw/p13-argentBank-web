@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserData, updateUserData, setIsEditing } from '../redux/userSlice';
+import { getUserData, setIsLoading, updateUserData, setIsEditing } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const User = () => {
-    const { isEditing, firstName, lastName } = useSelector((state) => state.user);
+    const { isEditing, isLoading, firstName, lastName } = useSelector((state) => state.user);
     const [userData, setUserData] = useState({
         firstName: '',
         lastName: '',
@@ -16,10 +16,14 @@ const User = () => {
 
     const handleSave = (e) => {
         e.preventDefault();
-        dispatch(updateUserData({userData, token }));
-        dispatch(setIsEditing());
+        dispatch(setIsLoading());
+        setTimeout(() => {
+            dispatch(updateUserData({ userData, token }));
+            dispatch(setIsEditing());
+            dispatch(setIsLoading());
+        }, 1000);
     };
-    
+
     const handleEdit = () => {
         dispatch(setIsEditing());
     };
@@ -42,35 +46,36 @@ const User = () => {
         } else {
             navigate('/sign-in');
         }
-    }, [token, dispatch, navigate, firstName ,lastName]);
+    }, [token, dispatch, navigate, firstName, lastName]);
 
-    // console.log(firstName, lastName);
+    // console.log(setIsLoading);
 
     return (
         <Layout>
             <div className="main bg-dark">
                 <div className="header">
-                <h1>Welcome back</h1>
+                    <h1>Welcome back</h1>
 
                     {isEditing ? (
                         <form className="user-edit" onSubmit={handleSave}>
                             <div>
                                 <input
                                     type="text"
-                                    name='firstName'
+                                    name="firstName"
                                     value={userData.firstName}
                                     onChange={handleChangeName}
                                 />
                                 <input
                                     type="text"
-                                    name='lastName'
+                                    name="lastName"
                                     value={userData.lastName}
                                     onChange={handleChangeName}
                                 />
                             </div>
                             <div>
                                 <button type="submit" className="editing-button">
-                                    Save
+                                    {isLoading ? 'Saving...' : 'Save'}
+                                    {/* Save */}
                                 </button>
                                 <button className="editing-button" onClick={handleEdit}>
                                     Cancel
@@ -79,7 +84,9 @@ const User = () => {
                         </form>
                     ) : (
                         <>
-                            <h2>{firstName} {lastName}</h2>
+                            <h2>
+                                {firstName} {lastName}
+                            </h2>
                             <button className="edit-button" onClick={handleEdit}>
                                 Edit Name
                             </button>

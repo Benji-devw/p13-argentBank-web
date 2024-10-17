@@ -10,15 +10,22 @@ const initialState = {
 };
 
 /**
- * @param {object} formData - email et password
- * @returns {Promise} - token
- * @description - Cette fonction permet de se connecter à l'API pour l'auth
+ * @param {string} token - Token of the user
+ * @returns {Promise} - retourne user data
+ * @description - Get user data
  */
 export const getUserData = createAsyncThunk('user/getUserData', async (token, { rejectWithValue }) => {
     const response = await callApi('/user/profile', 'POST', {}, token);
     return response.body ? response.body : rejectWithValue(response.message);
 });
 
+/**
+ * @param {object} payload - User data
+ * @param {string} payload.token - Token of the user
+ * @param {object} payload.userData - User data
+ * @returns {Promise} - retourne user data
+ * @description - Update user data
+ */
 export const updateUserData = createAsyncThunk('user/updateUserData', async (payload, { rejectWithValue }) => {
     const response = await callApi('/user/profile', 'PUT', payload.userData, payload.token);
     return response.body ? response.body : rejectWithValue(response.message);

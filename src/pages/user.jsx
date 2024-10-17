@@ -14,13 +14,13 @@ const User = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    // Fetch user data and handle navigation if token is not present
     const handleSave = (e) => {
         e.preventDefault();
         dispatch(setIsLoading());
         setTimeout(() => {
             dispatch(updateUserData({ userData, token }));
             dispatch(setIsEditing());
-            dispatch(setIsLoading());
         }, 1000);
     };
 

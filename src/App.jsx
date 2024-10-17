@@ -7,7 +7,7 @@ import User from './pages/user';
 import SignUp from './pages/sign-up';
 import PrivateRoute from './components/PrivateRoute';
 import { useDispatch } from 'react-redux';
-import {checkTokenExpiration} from './redux/authSlice';
+import { checkTokenExpiration } from './redux/authSlice';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const App = () => {
     useEffect(() => {
         dispatch(checkTokenExpiration());
     }, [dispatch]);
-    
+
     return (
         <Router>
             <Routes>
@@ -23,7 +23,6 @@ const App = () => {
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path={`/user`} element={<PrivateRoute element={User} />} />
-                {/* <Route path={`/user/:id`} element={<PrivateRoute element={User} />} /> */}
                 <Route path="*" element={<div>404</div>} />
             </Routes>
         </Router>

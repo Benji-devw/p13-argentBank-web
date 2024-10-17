@@ -12,8 +12,6 @@ const Header = () => {
         dispatch(logout());
     };
 
-    // console.log('firstName', firstName);
-
     return (
         <header>
             <nav className="main-nav">
@@ -29,7 +27,7 @@ const Header = () => {
                                 {firstName}
                             </Link>
                             <Link className="main-nav-item" onClick={handleLogout}>
-                            <i className="fas fa-sign-out"></i>
+                                <i className="fa fa-right-from-bracket"></i>
                                 Sign out
                             </Link>
                         </>

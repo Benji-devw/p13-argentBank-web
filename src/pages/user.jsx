@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, setIsLoading, updateUserData, setIsEditing } from '../redux/userSlice';

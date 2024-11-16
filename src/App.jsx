@@ -5,6 +5,7 @@ import SignIn from './pages/sign-in';
 import User from './pages/user';
 import SignUp from './pages/sign-up';
 import PrivateRoute from './components/PrivateRoute';
+import NotFound from './pages/NotFound';
 // import { useDispatch } from 'react-redux';
 // import { checkTokenExpiration } from './redux/authSlice';
 
@@ -22,7 +23,7 @@ const App = () => {
                 <Route path="/sign-in" element={<SignIn />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path={`/user`} element={<PrivateRoute element={User} />} />
-                <Route path="*" element={<div>404</div>} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Router>
     );

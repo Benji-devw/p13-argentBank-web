@@ -9,6 +9,12 @@ const initialState = {
     errorMessage: null,
 };
 
+// Charger les données utilisateur depuis localStorage
+const loadUserFromLocalStorage = () => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : initialState;
+  };
+
 /**
  * @param {string} token - Token of the user
  * @returns {Promise} - retourne user data
@@ -34,7 +40,7 @@ export const updateUserData = createAsyncThunk('user/updateUserData', async (pay
 // Slice pour user
 const userSlice = createSlice({
     name: 'user',
-    initialState,
+    initialState: loadUserFromLocalStorage(),
 
     // reducers =>
     // Usage : Utilisé pour définir les reducers qui gèrent les actions synchrones créées à l'intérieur du slice.
@@ -64,6 +70,7 @@ const userSlice = createSlice({
                 state.isLoading = false;
                 state.firstName = payload.firstName;
                 state.lastName = payload.lastName;
+                localStorage.setItem('user', JSON.stringify(state));
             })
             .addCase(getUserData.rejected, (state, { payload }) => {
                 state.isLoading = false;
@@ -79,6 +86,7 @@ const userSlice = createSlice({
                 state.firstName = action.payload.firstName;
                 state.lastName = action.payload.lastName;
                 state.isEditing = false;
+                localStorage.setItem('user', JSON.stringify(state));
             })
             .addCase(updateUserData.rejected, (state, action) => {
                 state.status = 'failed';

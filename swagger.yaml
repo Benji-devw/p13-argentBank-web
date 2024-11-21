@@ -198,6 +198,14 @@ paths:
           name: Authorization
           description: Attach Bearer JWT token
           required: true
+        - in: body
+          name: body
+          description: "Updated transaction details"
+          required: true
+          schema:
+            $ref: "#/definitions/PatchTransaction"
+      produces:
+        - application/json
       responses:
         200:
           description: "Transaction updated"

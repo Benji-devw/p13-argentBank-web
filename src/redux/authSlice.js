@@ -38,17 +38,7 @@ const authSlice = createSlice({
             localStorage.removeItem('userToken');
             localStorage.removeItem('tokenExpiration');
             localStorage.setItem('isAuthenticated', 'false');
-        },
-        // checkTokenExpiration: (state) => {
-        //     const tokenExpiration = localStorage.getItem('tokenExpiration');
-        //     if (tokenExpiration && new Date(tokenExpiration) < new Date()) {
-        //         state.token = '';
-        //         state.isAuthenticated = false;
-        //         localStorage.removeItem('userToken');
-        //         localStorage.removeItem('tokenExpiration');
-        //         localStorage.setItem('isAuthenticated', 'false');
-        //     }
-        // },
+        }
     },
 
     // extraReducers =>

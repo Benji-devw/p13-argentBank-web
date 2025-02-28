@@ -15,6 +15,7 @@ body, #layout {
 h1 {
   padding: 0;
   margin: .3em 0;
+  color: #243543;
 }
 
 .main {
@@ -22,7 +23,7 @@ h1 {
 }
 
 .bg-dark {
-  background-color: #12002b;
+  background-color: #dfe6ed;
 }
 
 .sr-only {

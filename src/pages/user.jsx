@@ -117,7 +117,7 @@ const User = () => {
                     )}
 
                     {showError && <AlerteMessage message={'Une erreur est survenu. Veuillez réessayer plus tard.'} alerte="error-message" />}
-                    {showSuccess && <AlerteMessage message={showSuccess} alerte="success-message" />}
+                    {showSuccess && <AlerteMessage message={'Le profil a été mis à jour.'} alerte="success-message" />}
                 </div>
 
                 <h2 className="sr-only">Accounts</h2>

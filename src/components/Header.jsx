@@ -21,7 +21,7 @@ const Header = () => {
                 <div>
                     {data.token ? (
                         <>
-                            <Link className="main-nav-item" to="/user">
+                            <Link className="main-nav-item" to="/profile">
                                 <i className="fa fa-user-circle"></i>
                                 {firstName}
                             </Link>

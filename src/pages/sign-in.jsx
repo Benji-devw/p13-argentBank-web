@@ -8,8 +8,8 @@ import { AlerteMessage } from '../components/AlerteMessage';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
-        email: 'tony@stark.com',
-        password: '123',
+        email: '',
+        password: '',
         rememberMe: false,
     });
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ const SignIn = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/user');
+            navigate('/profile');
         }
     }, [isAuthenticated, navigate]);
 

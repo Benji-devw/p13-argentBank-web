@@ -93,12 +93,14 @@ const User = () => {
                                     name="firstName"
                                     defaultValue={userData.firstName}
                                     onChange={handleChangeName}
+                                    maxLength={17}
                                 />
                                 <input
                                     type="text"
                                     name="lastName"
                                     value={userData.lastName}
                                     onChange={handleChangeName}
+                                    maxLength={17}
                                 />
                             </div>
                             <div>

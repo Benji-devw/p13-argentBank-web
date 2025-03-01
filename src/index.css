@@ -388,11 +388,31 @@ button:disabled {
 }
 
 .alerte-message {
+  /* position: absolute;
+  top: 4rem;
+  right: 1rem; */
+  /* left: 50%;
+  transform: translateX(-50%); */
   padding: 10px;
+  margin: 0 auto;
   margin-top: 1rem;
   border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.171);
   text-align: center;
   font-size: 0.9rem;
+  max-width: 300px;
+}
+/* add animation slide right */
+.alerte-message.slide-right {
+  animation: slide-right 0.5s ease;
+}
+@keyframes slide-right {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 .error-message {
   color: #d93025;
@@ -401,4 +421,10 @@ button:disabled {
 .success-message {
   color: #0f5132;
   background-color: #d1e7dd;
+}
+
+.header h1 .username {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: bold;
 }

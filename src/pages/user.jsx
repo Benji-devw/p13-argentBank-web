@@ -3,9 +3,12 @@ import Layout from '../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserData, setIsLoading, updateUserData, setIsEditing } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { AlerteMessage } from '../components/AlerteMessage';
 
 const User = () => {
-    const { isEditing, isLoading, firstName, lastName } = useSelector((state) => state.user);
+    const { isEditing, isLoading, firstName, lastName, errorMessage, successMessage } = useSelector(
+        (state) => state.user
+    );
     const [userData, setUserData] = useState({
         firstName: '',
         lastName: '',
@@ -13,6 +16,8 @@ const User = () => {
     const { token } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [showError, setShowError] = useState(null);
+    const [showSuccess, setShowSuccess] = useState(null);
 
     // Fetch user data and handle navigation if token is not present
     const handleSave = (e) => {
@@ -25,6 +30,10 @@ const User = () => {
     };
 
     const handleEdit = () => {
+        setUserData({
+            firstName: firstName,
+            lastName: lastName
+        });
         dispatch(setIsEditing());
     };
 
@@ -48,11 +57,33 @@ const User = () => {
         }
     }, [token, dispatch, navigate, firstName, lastName]);
 
+    useEffect(() => {
+        if (successMessage != null) {
+            setShowSuccess(successMessage);
+            setTimeout(() => {
+                setShowSuccess(null);
+            }, 3000);
+        }
+        if (errorMessage != null) {
+            setShowError(errorMessage);
+            setTimeout(() => {
+                setShowError(null);
+            }, 3000);
+        }
+    }, [successMessage, errorMessage]);
+
     return (
         <Layout className="main bg-dark">
             <div className="main bg-dark">
                 <div className="header">
-                    <h1>Welcome back</h1>
+                    <h1>
+                        Welcome back
+                        {!isEditing && (
+                            <span className="username">
+                                {firstName} {lastName}
+                            </span>
+                        )}
+                    </h1>
 
                     {isEditing ? (
                         <form className="user-edit" onSubmit={handleSave}>
@@ -60,7 +91,7 @@ const User = () => {
                                 <input
                                     type="text"
                                     name="firstName"
-                                    value={userData.firstName}
+                                    defaultValue={userData.firstName}
                                     onChange={handleChangeName}
                                 />
                                 <input
@@ -73,7 +104,6 @@ const User = () => {
                             <div>
                                 <button type="submit" className="editing-button">
                                     {isLoading ? 'Saving...' : 'Save'}
-                                    {/* Save */}
                                 </button>
                                 <button className="canceling-button" onClick={handleEdit}>
                                     Cancel
@@ -81,15 +111,13 @@ const User = () => {
                             </div>
                         </form>
                     ) : (
-                        <>
-                            <h1>
-                                {firstName} {lastName}
-                            </h1>
-                            <button className="edit-button" onClick={handleEdit}>
-                                Edit Name
-                            </button>
-                        </>
+                        <button className="edit-button" onClick={handleEdit}>
+                            Edit Name
+                        </button>
                     )}
+
+                    {showError && <AlerteMessage message={'Une erreur est survenu. Veuillez réessayer plus tard.'} alerte="error-message" />}
+                    {showSuccess && <AlerteMessage message={showSuccess} alerte="success-message" />}
                 </div>
 
                 <h2 className="sr-only">Accounts</h2>

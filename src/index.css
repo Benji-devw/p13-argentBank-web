@@ -206,7 +206,8 @@ h1 {
   font-weight: bold;
 }
 
-.input-wrapper input {
+.input-wrapper input, 
+.input-wrapper select {
   padding: 5px;
   font-size: 1.2rem;
 }
@@ -384,4 +385,20 @@ button:disabled {
 
 .home-button:hover {
   background-color: #0056b3;
+}
+
+.alerte-message {
+  padding: 10px;
+  margin-top: 1rem;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+.error-message {
+  color: #d93025;
+  background-color: #fce8e6;
+}
+.success-message {
+  color: #0f5132;
+  background-color: #d1e7dd;
 }

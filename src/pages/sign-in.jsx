@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/authSlice';
 import { useEffect } from 'react';
+import { AlerteMessage } from '../components/AlerteMessage';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -52,7 +53,8 @@ const SignIn = () => {
                     <button disabled={isLoading} className="sign-in-button" type="submit">
                         {isLoading ? 'Loading...' : 'Sign In'}
                     </button>
-                    {errorMessage && <p>{errorMessage}</p>}
+
+                    {errorMessage && <AlerteMessage message={errorMessage} alerte="error-message" />}
                 </form>
             </section>
         </Layout>

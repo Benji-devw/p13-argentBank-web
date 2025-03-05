@@ -15,8 +15,8 @@ export const callApi = async (url, method, payload, token) => {
         return data;
     } catch (error) {
         return {
-            status: 'error',
-            message: 'Le serveur est inaccessible. Veuillez réessayer plus tard.',
+            error: error,
+            message: 'Le serveur est inaccessible. Veuillez réessayer plus tard.'
         };
     }
 };

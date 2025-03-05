@@ -23,16 +23,27 @@ const User = () => {
     const handleSave = (e) => {
         e.preventDefault();
         dispatch(setIsLoading());
-        setTimeout(() => {
-            dispatch(updateUserData({ userData, token }));
-            dispatch(setIsEditing());
-        }, 1000);
+
+        if (errorMessage != null) {
+            setTimeout(() => {
+                dispatch(setIsLoading());
+                setShowError(errorMessage);
+            }, 1000);
+            setTimeout(() => {
+                setShowError(null);
+            }, 3000);
+        } else {
+            setTimeout(() => {
+                dispatch(updateUserData({ userData, token }));
+                dispatch(setIsEditing());
+            }, 1000);
+        }
     };
 
     const handleEdit = () => {
         setUserData({
             firstName: firstName,
-            lastName: lastName
+            lastName: lastName,
         });
         dispatch(setIsEditing());
     };
@@ -64,13 +75,7 @@ const User = () => {
                 setShowSuccess(null);
             }, 3000);
         }
-        if (errorMessage != null) {
-            setShowError(errorMessage);
-            setTimeout(() => {
-                setShowError(null);
-            }, 3000);
-        }
-    }, [successMessage, errorMessage]);
+    }, [successMessage]);
 
     return (
         <Layout className="main bg-dark">
@@ -93,6 +98,7 @@ const User = () => {
                                     name="firstName"
                                     defaultValue={userData.firstName}
                                     onChange={handleChangeName}
+                                    min={3}
                                     maxLength={17}
                                 />
                                 <input
@@ -101,6 +107,7 @@ const User = () => {
                                     value={userData.lastName}
                                     onChange={handleChangeName}
                                     maxLength={17}
+                                    min={3}
                                 />
                             </div>
                             <div>
@@ -118,7 +125,7 @@ const User = () => {
                         </button>
                     )}
 
-                    {showError && <AlerteMessage message={'Une erreur est survenu. Veuillez réessayer plus tard.'} alerte="error-message" />}
+                    {showError && <AlerteMessage message={errorMessage} alerte="error-message" />}
                     {showSuccess && <AlerteMessage message={'Le profil a été mis à jour.'} alerte="success-message" />}
                 </div>
 

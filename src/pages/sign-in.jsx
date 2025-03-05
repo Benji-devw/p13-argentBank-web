@@ -15,6 +15,7 @@ const SignIn = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { isLoading, errorMessage, isAuthenticated } = useSelector((state) => state.auth);
+    const [showError, setShowError] = useState(null);
 
     const handleChanges = (e) => {
         const { name, value, checked } = e.target;
@@ -30,7 +31,13 @@ const SignIn = () => {
         if (isAuthenticated) {
             navigate('/profile');
         }
-    }, [isAuthenticated, navigate]);
+        if (errorMessage) {
+            setShowError(errorMessage);
+            setTimeout(() => {
+                setShowError(null);
+            }, 3000);
+        }
+    }, [isAuthenticated, navigate, errorMessage]);
 
     return (
         <Layout className="main bg-dark">
@@ -54,7 +61,7 @@ const SignIn = () => {
                         {isLoading ? 'Loading...' : 'Sign In'}
                     </button>
 
-                    {errorMessage && <AlerteMessage message={errorMessage} alerte="error-message" />}
+                    {showError && <AlerteMessage message={errorMessage} alerte="error-message" />}
                 </form>
             </section>
         </Layout>

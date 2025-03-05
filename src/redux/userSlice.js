@@ -35,8 +35,6 @@ export const getUserData = createAsyncThunk('user/getUserData', async (token, { 
  */
 export const updateUserData = createAsyncThunk('user/updateUserData', async (payload, { rejectWithValue }) => {
     const response = await callApi('/user/profile', 'PUT', payload.userData, payload.token);
-    // console.log(response);
-
     return response.body ? { body: response.body, message: response.message } : rejectWithValue(response.message);
 });
 
